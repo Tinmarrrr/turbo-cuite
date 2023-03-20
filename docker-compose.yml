@@ -1,0 +1,23 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./turbo-back
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    container_name: backend
+    volumes:
+       - ./turbo-back:/app
+       - /app/node_modules
+  backoffice:
+    build:
+      context: ./turbo-admin
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    container_name: backoffice
+    stdin_open: true
+    volumes:
+       - ./turbo-admin:/app
+       - /app/node_modules
