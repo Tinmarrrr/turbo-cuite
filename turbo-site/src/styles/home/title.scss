@@ -1,0 +1,30 @@
+// @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
+
+// @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
+.titleContainer {
+    align-items: center;
+    text-align: center;
+    // top: 10%;
+    // position: absolute;
+    // width: 100%;
+}
+
+.title {
+    font-family: "Open Sans", sans-serif;
+    // font-family: "Open Sans", sans-serif;
+    text-shadow: 5px 5px #fdf1d767;
+    font-size: 58px;
+}
+
+@media screen and (min-width: 767px) {
+    .titleContainer {
+        position: absolute;
+        top: 2%;
+        left: 5%;
+    }
+
+    .title {
+        font-size: 6rem;
+    }
+}

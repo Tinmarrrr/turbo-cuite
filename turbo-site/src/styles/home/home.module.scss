@@ -1,0 +1,50 @@
+@import "./_variables.scss";
+@import "./buttons.scss";
+@import "./title.scss";
+@import "./interactions.scss";
+
+.body {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  color: $font-color;
+}
+
+.wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background: linear-gradient(
+    $mobile-line-deg,
+    $background-color $mobile-line-start,
+    $line-color $mobile-line-start,
+    $line-color $mobile-line-end,
+    $background-color $mobile-line-end
+  );
+}
+
+@media screen and (min-width: 767px) {
+  .wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background: linear-gradient(
+      $mobile-line-deg,
+      $background-color $desktop-line-start,
+      $line-color $desktop-line-start,
+      $line-color $desktop-line-end,
+      $background-color $desktop-line-end
+    );
+  }
+}
