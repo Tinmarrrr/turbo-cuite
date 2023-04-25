@@ -3,6 +3,7 @@ const admin = require("firebase-admin");
 const { v4: uuidv4 } = require("uuid");
 const express = require("express");
 const app = express();
+const { FieldPath } = require("firebase-admin").firestore;
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -16,9 +17,9 @@ app.use(express.json());
 
 const port = process.env.port || 8080;
 
-var cors = require('cors')
+var cors = require("cors");
 
-app.use(cors())
+app.use(cors());
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
@@ -31,10 +32,24 @@ app.get("/", (req, res) => {
 app.post("/create", async (req, res) => {
   try {
     const id = uuidv4();
+
+    let joueurs = new Set(); // initialise un ensemble vide pour stocker les noms des joueurs
+    let regex = /%j([1-8])%/g;
+    let match;
+    while ((match = regex.exec(req.body.question)) !== null) {
+      let joueur = match[1]; // extrait le numéro du joueur de l'occurrence
+      joueurs.add(joueur); // ajoute le numéro du joueur à l'ensemble
+    }
+    let nbJoueurs = joueurs.size; // compte le nombre de joueurs différents
+    console.log(nbJoueurs);
+
     let question = {
       name: req.body.name,
       question: req.body.question,
       status: false,
+      upvote: 0,
+      downvote: 0,
+      nbJoueurs: nbJoueurs,
     };
 
     if (question.question === "") {
@@ -113,9 +128,134 @@ app.patch("/unvalidate/:id", async (req, res) => {
   }
 });
 
+app.patch("/upvote/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const question = await db.collection("turboQuestions").doc(id).get();
+    const data = question.data();
+    const upvote = data.upvote;
+    const response = await db
+      .collection("turboQuestions")
+      .doc(id)
+      .update({ upvote: upvote + 1 });
+    res.status(200).send(response);
+    console.log(upvote + 1);
+  } catch (error) {
+    res.send(error);
+    console.log(error);
+  }
+});
+
+app.patch("/downvote/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const question = await db.collection("turboQuestions").doc(id).get();
+    const data = question.data();
+    const downvote = data.downvote;
+    const response = await db
+      .collection("turboQuestions")
+      .doc(id)
+      .update({ downvote: downvote + 1 });
+    res.status(200).send(response);
+  } catch (error) {
+    res.send(error);
+    console.log(error);
+  }
+});
+
+///
+
+app.patch("/  /:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const question = await db.collection("turboQuestions").doc(id).get();
+    const data = question.data();
+    const upvote = data.upvote;
+    const response = await db
+      .collection("turboQuestions")
+      .doc(id)
+      .update({ upvote: upvote - 1 });
+    res.status(200).send(response);
+  } catch (error) {
+    res.send(error);
+    console.log(error);
+  }
+});
+
+app.patch("/canceldownvote/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const question = await db.collection("turboQuestions").doc(id).get();
+    const data = question.data();
+    const downvote = data.downvote;
+    const response = await db
+      .collection("turboQuestions")
+      .doc(id)
+      .update({ downvote: downvote - 1 });
+    res.status(200).send(response);
+  } catch (error) {
+    res.send(error);
+    console.log(error);
+  }
+});
+
+///
+
+app.get("/questions-upvote", async (req, res) => {
+  try {
+    const questions = await db
+      .collection("turboQuestions")
+      .orderBy("upvote", "desc")
+      .get();
+    const questionsArray = questions.docs.map((question) => {
+      const data = question.data();
+      return { id: question.id, ...data };
+    });
+    res.status(200).send(questionsArray);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.get("/questions-nbplayer", async (req, res) => {
+  if (req.query.nbPlayer === undefined) {
+    res.send("nbPlayer is undefined");
+    return;
+  }
+  if (req.query.nbQuestions === undefined) {
+    res.send("nbQuestions is undefined");
+    return;
+  }
+
+  console.log("TYPE DE NBPL", typeof req.query.nbPlayer);
+  try {
+    const questions = await db
+      .collection("turboQuestions")
+      .where("nbJoueurs", "<=", parseInt(req.query.nbPlayer))
+      .where("status", "==", true)
+      .orderBy("random()")
+      .limit(20)
+      .get();
+    console.log("questions =>", questions.docs);
+    const questionsArray = questions.docs.map((question) => {
+      const data = question.data();
+      console.log("data => ", data);
+      return { id: question.id, ...data };
+    });
+    console.log("questionarray =>", questionsArray);
+    res.status(200).send(questionsArray);
+  } catch (error) {
+    res.send(error);
+    console.log(error);
+  }
+});
+
 app.get("/questions-true", async (req, res) => {
   try {
-    const questions = await db.collection("turboQuestions").where("status", "==", true).get();
+    const questions = await db
+      .collection("turboQuestions")
+      .where("status", "==", true)
+      .get();
     const questionsArray = questions.docs.map((question) => {
       const data = question.data();
       return { id: question.id, ...data };
@@ -125,18 +265,32 @@ app.get("/questions-true", async (req, res) => {
     res.send(error);
     console.log(error);
   }
-
 });
 
 app.get("/questions-false", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   try {
-    const questions = await db.collection("turboQuestions").where("status", "==", false).get();
+    const questions = await db
+      .collection("turboQuestions")
+      .where("status", "==", false)
+      .get();
     const questionsArray = questions.docs.map((question) => {
       const data = question.data();
       return { id: question.id, ...data };
     });
     res.status(200).send(questionsArray);
+  } catch (error) {
+    res.send(error);
+    console.log(error);
+  }
+});
+
+app.delete("/delete/:id", async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  try {
+    const id = req.params.id;
+    const response = await db.collection("turboQuestions").doc(id).delete();
+    res.status(200).send(response);
   } catch (error) {
     res.send(error);
     console.log(error);

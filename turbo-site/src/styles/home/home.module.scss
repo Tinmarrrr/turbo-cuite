@@ -1,50 +1,65 @@
 @import "./_variables.scss";
 @import "./buttons.scss";
-@import "./title.scss";
-@import "./interactions.scss";
+// @import "./title.scss";
+// @import "./interactions.scss";
 
 .body {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
+  background-color: $background-color;
+  display: flex;
+}
+
+.line {
+  position: absolute;
+  left: -4%;
+  bottom: 40%;
+  width: 150%;
+  height: 50%;
+  z-index: -1;
+  transform: rotate(40deg);
+  background-color: $line-color;
+}
+
+.buttonsContainer {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.addquestion {
+  flex: 1;
+}
+
+.buttons {
+  position: absolute;
+  bottom: 11%;
+  left: 10%;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  position: absolute;
+  left: 10%;
+  top: 10%;
+  font-weight: bold;
   color: $font-color;
+  font-family: "Open Sans", sans-serif;
+  text-shadow: 5px 5px #fdf1d767;
+  font-size: 6rem;
+}
+.title::selection{
+  color: $line-color;
+  text-shadow: 5px 5px $font-color;
 }
 
-.wrapper {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 0;
-  height: 0;
-  width: 100vw;
-  height: 100vh;
-
-  background: linear-gradient(
-    $mobile-line-deg,
-    $background-color $mobile-line-start,
-    $line-color $mobile-line-start,
-    $line-color $mobile-line-end,
-    $background-color $mobile-line-end
-  );
-}
-
-@media screen and (min-width: 767px) {
-  .wrapper {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 0;
-    height: 0;
-    width: 100vw;
-    height: 100vh;
-
-    background: linear-gradient(
-      $mobile-line-deg,
-      $background-color $desktop-line-start,
-      $line-color $desktop-line-start,
-      $line-color $desktop-line-end,
-      $background-color $desktop-line-end
-    );
-  }
+.picture {
+  flex: 1;
+  height: 100%;
+  width: 100%;
 }

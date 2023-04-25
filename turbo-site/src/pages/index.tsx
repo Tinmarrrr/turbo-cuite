@@ -1,22 +1,37 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
 import styles from '@/styles/home/home.module.scss'
+import AddQuestion from '@/components/addQuestion'
+import { useState } from 'react';
 
 export default function Home() {
+
+  const [showForm, setShowForm] = useState(false);
+
+  function handleForm() {
+    setShowForm(!showForm);
+  }
+
+  function handleKeyDown(event: { keyCode: number }) {
+    if (event.keyCode === 27) {
+      setShowForm(false);
+    }
+  }
+
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.diagonalLine}>
-        <div className={styles.body}>
-          <div className={styles.titleContainer}>
-            <h1 className={styles.title}>TURBOCUITE</h1>
-          </ div>  {/* titleContainer */}
-          <div className={styles.interactions}>
-            <a className={styles.btn} href="#">CONTRIBUER</a>
-            <a className={styles.btn} href="http://localhost:3000/players">JOUER</a>
-          </div> {/* interactions */}
-        </div> {/* body */}
-      </div> {/* diagonalLine */}
-    </div> /* wrapper */
+    <div className={styles.body} onKeyDown={handleKeyDown} tabIndex={0}>
+      <div className={styles.buttonsContainer}>
+        <div className={styles.title}>TURBOCUITE</div>
+        <div className={styles.buttons}>
+          <div className={styles.btn} onClick={handleForm}>CONTRIBUER</div>
+          <a className={styles.btn} href="http://localhost:3000/players">JOUER</a>
+        </div>
+      </div>
+      {showForm ?
+        <div className={styles.addquestion}>
+          <AddQuestion />
+        </div>
+        : <div className={styles.picture} ></div>
+      }
+      <div className={styles.line} />
+    </div>
   )
 }

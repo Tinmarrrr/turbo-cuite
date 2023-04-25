@@ -42,6 +42,9 @@
   height: 90%;
   display: flex;
 }
+.playerinputarea:focus::placeholder {
+  color: transparent;
+}
 
 /*
     font-family: "Open Sans", sans-serif;
@@ -193,7 +196,11 @@
   box-shadow: $background-color 0px 5px 0 0;
   font-size: 2rem;
 
+  // ::placeholder {
+  // }
+
   &::placeholder {
+    color: transparent;
     color: $font-color;
   }
 }

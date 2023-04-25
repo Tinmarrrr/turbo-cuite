@@ -1,9 +1,14 @@
 // import styles from '@/styles/players/players.module.scss'
 import styles from "@/styles/abc/players.module.scss";
 import { useState } from "react";
+import { useRouter } from 'next/router';
+
+
 
 export default function Players() {
   const [players, setPlayers] = useState<String[]>([]);
+  const router = useRouter();
+
 
   const addPlayer = (event: any) => {
     const playerName = event.target.value;
@@ -15,9 +20,10 @@ export default function Players() {
   };
 
   const startGame = () => {
-    console.log("START GAME");
-    // Code pour commencer le jeu avec les noms des joueurs stockés dans `players
-    console.log(players);
+    sessionStorage.setItem("players", JSON.stringify(players));
+    router.push({
+      pathname: '/game',
+    });
   };
 
   return (
@@ -37,7 +43,8 @@ export default function Players() {
                 <input
                   className={styles.AddPlayerButton}
                   id="id"
-                  placeholder="Ajouter un Bincheur"
+                  placeholder="AJOUTER UN JOUEUR"
+                  autoComplete="off"
                   type="text"
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {

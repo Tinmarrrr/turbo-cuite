@@ -1,0 +1,121 @@
+@import "../home/_variables.scss";
+@import "../home/buttons";
+
+.body {
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  background-color: $font-color;
+  display: flex;
+  justify-content: center;
+  border-radius: 35px;
+  height: 80%;
+  width: 80%;
+}
+
+.title {
+  margin-top: 5%;
+  width: 100%;
+  color: $background-color;
+  padding-top: 2%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 4.5vh;
+}
+.title::selection {
+  color: $line-color;
+}
+
+.infoContainer {
+  margin-top: 8%;
+  display: flex;
+  text-align: justify;
+  align-items: center;
+  padding: 2%;
+  color: $font-color;
+  font-size: 3vh;
+  background-color: $background-color;
+  // height: 10%;
+  width: 80%;
+  border-radius: 25px;
+}
+.infoContainer::selection {
+  color: $line-color;
+}
+
+.form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  padding: 2%;
+  height: 100%;
+  width: 80%;
+  border-radius: 35px;
+  margin-top: 5%;
+  :focus::placeholder {
+    color: transparent;
+  }
+}
+
+.fieldName {
+  margin-top: 2px;
+  border: none;
+  border-radius: 5px;
+  height: 15%;
+  background-color: $line-color;
+  width: 100%;
+  font-size: 2vh;
+  color: $font-color;
+  padding-left: 8px;
+  padding-top: 2px;
+  border: none;
+  overflow: auto;
+  outline: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.fieldName::selection {
+  color: $background-color;
+}
+
+.fieldText {
+  margin-top: 8px;
+  border: none;
+  border-radius: 5px;
+  height: 30%;
+  background-color: $line-color;
+  width: 100%;
+  padding-left: 8px;
+  padding-top: 8px;
+  font-size: 2vh;
+  color: $font-color;
+
+  border: none;
+  overflow: auto;
+  outline: none;
+  resize: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.fieldText::selection {
+  color: $background-color;
+}
+
+.submitButton {
+  padding-top: 10%;
+  display: flex;
+  justify-content: center;
+}

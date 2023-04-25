@@ -15,9 +15,20 @@ services:
       context: ./turbo-admin
       dockerfile: Dockerfile.dev
     ports:
-      - "3000:3000"
+      - "3001:3001"
     container_name: backoffice
     stdin_open: true
     volumes:
        - ./turbo-admin:/app
+       - /app/node_modules
+  site:
+    build:
+      context: ./turbo-site
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    container_name: site
+    stdin_open: true
+    volumes:
+       - ./turbo-site:/app
        - /app/node_modules

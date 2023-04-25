@@ -8,7 +8,7 @@ const Home = () => {
   const [validatedQuestions, setValidatedQuestions] = useState([]);
   const [showValidatedQuestions, setShowValidatedQuestions] = useState(false);
 
-  let path = "http://localhost:3000";
+  let path = "http://localhost:8080";
 
   useEffect(() => {
     axios

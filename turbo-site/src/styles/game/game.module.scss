@@ -1,0 +1,50 @@
+@import "../home/_variables";
+
+.body {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $background-color;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.questionContainer {
+  color: $font-color;
+  width: 65%;
+  height: 50%;
+  background-color: $line-color;
+  border-radius: 35px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 3.5vh;
+}
+
+.authorContainer {
+  height: 7%;
+  position: fixed;
+  bottom: 0%;
+  left: 6%;
+  font-size: 2.5vh;
+  color: $font-color;
+  display: flex;
+}
+
+.voteContainer {
+  position: fixed;
+  bottom: 1%;
+  right: 10%;
+}
+
+.upvote {
+  width: 8vh;
+  color: $font-color;
+}
