@@ -53,7 +53,7 @@ export default function AddQuestion() {
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.title}>AJOUTER UNE QUESTION</div>
           <div className={styles.infoContainer}>
-            Pour différencier les joueurs, merci de leur attribuer un numéro et entouré du signe '%'. Ex: %1% donne 2 gorgées à %2%.
+            Pour différencier les joueurs, merci de leur attribuer un numéro et entouré du signe &apos;%&apos;. Ex: %1% donne 2 gorgées à %2%.
           </div>
           <div className={styles.input}>
             <label>

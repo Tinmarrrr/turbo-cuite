@@ -201,54 +201,52 @@ app.patch("/canceldownvote/:id", async (req, res) => {
 
 ///
 
-app.get("/questions-upvote", async (req, res) => {
-  try {
-    const questions = await db
-      .collection("turboQuestions")
-      .orderBy("upvote", "desc")
-      .get();
-    const questionsArray = questions.docs.map((question) => {
-      const data = question.data();
-      return { id: question.id, ...data };
-    });
-    res.status(200).send(questionsArray);
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 app.get("/questions-nbplayer", async (req, res) => {
   if (req.query.nbPlayer === undefined) {
-    res.send("nbPlayer is undefined");
+    res.send("nbPlayer est indéfini");
     return;
   }
   if (req.query.nbQuestions === undefined) {
-    res.send("nbQuestions is undefined");
+    res.send("nbQuestions est indéfini");
     return;
   }
 
-  console.log("TYPE DE NBPL", typeof req.query.nbPlayer);
   try {
-    const questions = await db
+    const maxNbJoueurs = parseInt(req.query.nbPlayer); // Valeur maximale pour le nombre de joueurs
+    const questionsSnapshot = await db
       .collection("turboQuestions")
-      .where("nbJoueurs", "<=", parseInt(req.query.nbPlayer))
-      .where("status", "==", true)
-      .orderBy("random()")
-      .limit(20)
+      .where("nbJoueurs", "<=", maxNbJoueurs)
       .get();
-    console.log("questions =>", questions.docs);
-    const questionsArray = questions.docs.map((question) => {
+
+    // Convertir les résultats en un tableau
+    const questionsArray = questionsSnapshot.docs.map((question) => {
       const data = question.data();
       console.log("data => ", data);
       return { id: question.id, ...data };
     });
-    console.log("questionarray =>", questionsArray);
-    res.status(200).send(questionsArray);
+
+    // Mélanger aléatoirement les questions
+    const shuffledQuestions = shuffleArray(questionsArray);
+
+    // Limiter le nombre de questions renvoyées au client (ici, 20)
+    const limitedQuestions = shuffledQuestions.slice(0, 20);
+
+    console.log("questionarray =>", limitedQuestions);
+    res.status(200).send(limitedQuestions);
   } catch (error) {
     res.send(error);
     console.log(error);
   }
 });
+
+// Fonction pour mélanger aléatoirement un tableau
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
 
 app.get("/questions-true", async (req, res) => {
   try {

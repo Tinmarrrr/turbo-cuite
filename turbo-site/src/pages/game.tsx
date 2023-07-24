@@ -22,7 +22,7 @@ export default function Game() {
     if (storedPlayers) {
       let nbPlayer = storedPlayers.split(',').length;
       cleanPlayerArr(storedPlayers);
-      const nbQuestion: number = 8;
+      const nbQuestion: number = 2;
       const axios = require('axios');
       let config = {
         method: 'get',
@@ -112,7 +112,7 @@ export default function Game() {
         onClick={() => (gameFinished())}>
         <div className={styles.questionContainer}>
           {reachedEnd ? (
-            <p>Merci d'avoir joué !</p>
+            <p>Merci d&apos;avoir joué !</p>
           ) : (
             <>
               <p>{questions[currentQuestionIndex]}</p>
