@@ -1,1 +1,1 @@
-web: node ./turbo-back/server.js
+web: npm start --prefix turbo-back
