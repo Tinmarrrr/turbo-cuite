@@ -15,7 +15,6 @@ export default function Home() {
       setShowForm(false);
     }
   }
-
   return (
     <div className={styles.body} onKeyDown={handleKeyDown} tabIndex={0}>
       <div className={styles.buttonsContainer}>
