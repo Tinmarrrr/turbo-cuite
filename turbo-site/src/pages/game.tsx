@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import styles from '@/styles/game/game.module.scss'
-import { Loading } from '@nextui-org/react';
+import { useState, useEffect } from "react";
+import styles from "@/styles/game/game.module.scss";
+import { Loading } from "@nextui-org/react";
 
-import { ArrowDownIcon } from '@heroicons/react/24/solid'
-import { ArrowUpIcon } from '@heroicons/react/24/solid'
-import toast, { Toaster } from 'react-hot-toast';
-import router from 'next/router';
+import { ArrowDownIcon } from "@heroicons/react/24/solid";
+import { ArrowUpIcon } from "@heroicons/react/24/solid";
+import toast, { Toaster } from "react-hot-toast";
+import router from "next/router";
 
 export default function Game() {
   const [questions, setQuestions] = useState<any>([]);
@@ -16,33 +16,37 @@ export default function Game() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
 
   const routeApi = process.env.API_BASE_URL;
+  console.log("routeApi", routeApi);
 
   useEffect(() => {
-    const storedPlayers = sessionStorage.getItem('players');
+    const storedPlayers = sessionStorage.getItem("players");
     if (storedPlayers) {
-      let nbPlayer = storedPlayers.split(',').length;
+      let nbPlayer = storedPlayers.split(",").length;
       cleanPlayerArr(storedPlayers);
       const nbQuestion: number = 2;
-      const axios = require('axios');
+      const axios = require("axios");
       let config = {
-        method: 'get',
+        method: "get",
         maxBodyLength: Infinity,
-        url: routeApi + `/questions-nbplayer?nbPlayer=${nbPlayer}&nbQuestions=${nbQuestion}`,
-        headers: {}
+        url:
+          routeApi +
+          `/questions-nbplayer?nbPlayer=${nbPlayer}&nbQuestions=${nbQuestion}`,
+        headers: {},
       };
-      axios.request(config)
-        .then((response: { data: any; }) => {
-          console.log('Length =', response.data);
+      console.log("url :", config.url);
+      axios
+        .request(config)
+        .then((response: { data: any }) => {
+          console.log("Length =", response.data);
           if (response.data.length === 0) {
-            toast.error("Problème technique 😫")
+            toast.error("Problème technique 😫");
           } else {
             setQuestions(response.data);
             setLoading(false);
-
           }
         })
         .catch((error: any) => {
-          toast.error("Problème technique 😫")
+          toast.error("Problème technique 😫");
           console.log(error);
         });
     }
@@ -50,11 +54,11 @@ export default function Game() {
 
   function cleanPlayerArr(storedPlayers: String) {
     let str = JSON.stringify(storedPlayers);
-    str = str.replace(/\[/g, '');
-    str = str.replace(/\]/g, '');
-    str = str.replace(/\\/g, '');
-    str = str.replace(/"/g, '');
-    let tab: String[] = str.split(',');
+    str = str.replace(/\[/g, "");
+    str = str.replace(/\]/g, "");
+    str = str.replace(/\\/g, "");
+    str = str.replace(/"/g, "");
+    let tab: String[] = str.split(",");
     shufflePlayerArray(tab);
   }
 
@@ -68,7 +72,7 @@ export default function Game() {
     setPlayerArr(newArray);
   }
 
-  console.log('currentQuestionIndex', currentQuestionIndex);
+  console.log("currentQuestionIndex", currentQuestionIndex);
   function translateQuestion(str: String): String {
     let result = str;
     for (let i = 1; i <= questions[currentQuestionIndex].nbJoueurs; i++) {
@@ -81,7 +85,6 @@ export default function Game() {
     return result;
   }
 
-
   function handleClickNext() {
     if (currentQuestionIndex < questions.length - 1) {
       shufflePlayerArray();
@@ -93,7 +96,7 @@ export default function Game() {
 
   function gameFinished() {
     router.push({
-      pathname: '/',
+      pathname: "/",
     });
   }
 
@@ -101,15 +104,15 @@ export default function Game() {
     return (
       <div className={styles.body}>
         <div className={styles.questionContainer}>
-          <Loading color={'white'} />
+          <Loading color={"white"} />
         </div>
-      </div>);
+      </div>
+    );
   }
 
   if (reachedEnd) {
     return (
-      <div className={styles.body}
-        onClick={() => (gameFinished())}>
+      <div className={styles.body} onClick={() => gameFinished()}>
         <div className={styles.questionContainer}>
           {reachedEnd ? (
             <p>Merci d&apos;avoir joué !</p>
@@ -124,12 +127,13 @@ export default function Game() {
     );
   }
 
-
-  console.log("QUESTIONS",questions);
+  console.log("QUESTIONS", questions);
 
   return (
     <div className={styles.body}>
-      <div><Toaster /></div>
+      <div>
+        <Toaster />
+      </div>
       <div className={styles.questionContainer}>
         {translateQuestion(questions[currentQuestionIndex].question)}
       </div>
@@ -140,9 +144,8 @@ export default function Game() {
         </div>
         <div className={styles.voteContainer}>
           <button onClick={handleClickNext}>Suivant</button>
-
         </div>
       </div>
-    </div >
+    </div>
   );
 }
