@@ -22,7 +22,7 @@ export default function Home() {
         <div className={styles.title}>TURBOCUITE</div>
         <div className={styles.buttons}>
           <div className={styles.btn} onClick={handleForm}>CONTRIBUER</div>
-          <a className={styles.btn} href="http://localhost:3000/players">JOUER</a>
+          <a className={styles.btn} href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/players`}>JOUER</a>
         </div>
       </div>
       {showForm ?
