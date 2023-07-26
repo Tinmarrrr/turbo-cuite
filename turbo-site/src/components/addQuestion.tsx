@@ -8,7 +8,9 @@ export default function AddQuestion() {
   const [name, setName] = useState("");
   const [question, setQuestion] = useState("");
 
-  const routeApi = process.env.API_BASE_URL;
+  const routeApi = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  console.log("routeApi", routeApi);
 
   const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();

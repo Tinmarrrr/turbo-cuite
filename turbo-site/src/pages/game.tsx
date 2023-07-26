@@ -15,7 +15,7 @@ export default function Game() {
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
 
-  const routeApi = process.env.API_BASE_URL;
+  const routeApi = process.env.NEXT_PUBLIC_API_BASE_URL;
   console.log("routeApi", routeApi);
 
   useEffect(() => {
