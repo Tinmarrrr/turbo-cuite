@@ -8,8 +8,7 @@ export default function AddQuestion() {
   const [name, setName] = useState("");
   const [question, setQuestion] = useState("");
 
-
-  const routeApi = "http://localhost:8080";
+  const routeApi = process.env.API_BASE_URL;
 
   const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();

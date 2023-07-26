@@ -13,9 +13,9 @@ export default function Game() {
   const [playerArr, setPlayerArr] = useState<any>([]);
   const [reachedEnd, setReachedEnd] = useState(false);
 
-
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
 
+  const routeApi = process.env.API_BASE_URL;
 
   useEffect(() => {
     const storedPlayers = sessionStorage.getItem('players');
@@ -27,7 +27,7 @@ export default function Game() {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `http://localhost:8080/questions-nbplayer?nbPlayer=${nbPlayer}&nbQuestions=${nbQuestion}`,
+        url: routeApi + `/questions-nbplayer?nbPlayer=${nbPlayer}&nbQuestions=${nbQuestion}`,
         headers: {}
       };
       axios.request(config)
